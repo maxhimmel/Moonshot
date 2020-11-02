@@ -1,0 +1,3 @@
+[submodule "Assets/ThirdParty/XamFramework"]
+	path = Assets/ThirdParty/XamFramework
+	url = https://github.com/maxhimmel/XamFramework.git

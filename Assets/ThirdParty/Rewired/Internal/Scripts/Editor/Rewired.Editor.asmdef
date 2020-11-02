@@ -1,0 +1,17 @@
+{
+    "name": "Rewired.Editor",
+    "references": [
+        "GUID:46f554ec6fef5a64585289b98cefe93e"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
