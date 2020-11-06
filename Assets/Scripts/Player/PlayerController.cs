@@ -13,129 +13,117 @@ namespace Moonshot.Gameplay.Player
 	{
 		[Header( "Orbit" )]
 		[SerializeField] private Rigidbody2D m_orbitTarget = default;
-		[SerializeField] private float m_groundOffset = 0.15f;
 		[SerializeField] private float m_gravityForce = 2;
 
 		[Header( "Movement" )]
 		[SerializeField] private float m_acceleration = 10;
 		[SerializeField] private float m_maxSpeed = 5;
-		[SerializeField] private float m_jumpStrength = 8;
+		[SerializeField] private float m_jumpHeight = 3;
+		[SerializeField] private float m_groundedProbeLength = 0.2f;
+		[SerializeField] private LayerMask m_groundedProbeLayer = 0;
 
 		private Rewired.Player m_input = null;
 
 		private Rigidbody2D m_rigidbody = null;
 		private CircleCollider2D m_collider = null;
-
-		private Vector3 m_desiredDirection = Vector3.up;
-		private Vector3 m_prevDirection = Vector3.up;
-		private float m_currentSpeed = 0;
 		
+		private Vector3 m_velocity = Vector3.zero;
+		private Vector3 m_desiredVelocity = Vector3.zero;
+		private Vector3 m_gravityNormal = Vector3.up;
+		private bool m_isGrounded = false;
+		private bool m_isJumpDesired = false;
+
 		private void Update()
 		{
-			SetDesiredDirection( GetMoveInput() );
+			SetDesiredVelocity( GetMoveInput() );
+
+			if ( m_input.GetButtonDown( Action.Jump ) )
+			{
+				TryJump();
+			}
 		}
 
-		private void SetDesiredDirection( Vector3 direction )
+		private void SetDesiredVelocity( Vector3 moveDirection )
 		{
-			m_desiredDirection = direction;
+			m_desiredVelocity = moveDirection * m_maxSpeed;
+		}
+
+		private bool TryJump()
+		{
+			if ( !m_isGrounded ) { return false; }
+
+			m_isJumpDesired = true;
+			return true;
 		}
 
 		private Vector3 GetMoveInput()
 		{
-			Vector3 rawInput = m_input.GetAxis2D( Action.MoveHorizontal, Action.MoveVertical );
-			return Vector3.ClampMagnitude( rawInput, 1 );
+			Vector2 rawMoveInput = m_input.GetAxis2D( Action.MoveHorizontal, Action.MoveVertical );
+			Vector2 clampedMoveInput = Vector2.ClampMagnitude( rawMoveInput, 1 );
+			Vector3 moveInput = Vector3.ProjectOnPlane( clampedMoveInput, m_gravityNormal ).normalized * clampedMoveInput.magnitude;
+
+			return moveInput;
 		}
 
 		private void FixedUpdate()
 		{
-			Accelerate();
-			ApplyMovement();
-
 			UpdateState();
-		}
 
-		private Vector3 GetCurrentDirection()
-		{
-			float currentAngle = Vector2.SignedAngle( Vector2.up, -GetGravityDirection() );
-			Vector3 dirToCurrentAngle = Quaternion.Euler( 0, 0, currentAngle ) * Vector3.up;
-			//Debug.DrawRay( m_orbitTarget.position, dirToCurrentAngle, Color.cyan, 0.1f );
-
-			return dirToCurrentAngle;
-		}
-
-		private Vector3 GetGravityDirection()
-		{
-			return (m_orbitTarget.position - m_rigidbody.position).normalized;
-		}
-
-		private Vector3 GetTargetDirection()
-		{
-			Vector3 nonEmptyMoveInput = (m_desiredDirection.sqrMagnitude <= 0)
-				? m_prevDirection
-				: m_desiredDirection;
+			Accelerate();	
 			
-			float targetAngle = Vector2.SignedAngle( Vector2.up, nonEmptyMoveInput );
-			Vector3 dirToTargetAngle = Quaternion.Euler( 0, 0, targetAngle ) * Vector3.up;
-			//Debug.DrawRay( m_orbitTarget.position, dirToTargetAngle, Color.magenta, 0.1f );
+			if ( m_isJumpDesired )
+			{
+				Jump();
+			}
 
-			return dirToTargetAngle;
-		}
-
-		private void Accelerate()
-		{
-			float speedDelta = m_acceleration * Time.deltaTime;
-			m_currentSpeed = Mathf.MoveTowards( m_currentSpeed, GetDesiredSpeed(), speedDelta );
-		}
-
-		private float GetDesiredSpeed()
-		{
-			Vector3 dirToCurrentAngle = GetCurrentDirection();
-			Vector3 dirToTargetAngle = GetTargetDirection();
-
-
-			float rawAlignmentStrength = 1 - Mathf.Max( 0, Vector3.Dot( dirToCurrentAngle, dirToTargetAngle ) );
-			float alignmentStrength = Mathf.Sqrt( rawAlignmentStrength );
-
-			float inputStrength = m_desiredDirection.magnitude;
-			return m_maxSpeed * (alignmentStrength * inputStrength);
-		}
-
-		private void ApplyMovement()
-		{
-			Vector3 dirToCurrentAngle = GetCurrentDirection();
-			Vector3 dirToTargetAngle = GetTargetDirection();
-
-
-			float moveAngle = Vector2.SignedAngle( dirToCurrentAngle, dirToTargetAngle );
-			float angleDelta = m_currentSpeed * System.Math.Sign( moveAngle );
-			Vector2 dirToNextAngle = Quaternion.AngleAxis( angleDelta, Vector3.forward ) * dirToCurrentAngle;
-			
-			Vector2 nextPos = m_orbitTarget.position
-				+ dirToNextAngle * GetSurfaceRadius()
-				+ dirToNextAngle * GetPlayerRadius()
-				+ dirToNextAngle * m_groundOffset;
-
-			m_rigidbody.MovePosition( nextPos );
-		}
-
-		private float GetSurfaceRadius()
-		{
-			CircleCollider2D collider = m_orbitTarget.GetComponentInChildren<CircleCollider2D>();
-			if ( collider == null ) { return -1; }
-
-			return collider.radius;
-		}
-
-		private float GetPlayerRadius()
-		{
-			return m_collider.radius;
+			ApplyGravity();
+			ApplyVelocity();
 		}
 
 		private void UpdateState()
 		{
-			m_prevDirection = (m_desiredDirection.sqrMagnitude <= 0)
-				? m_prevDirection
-				: m_desiredDirection;
+			m_velocity = m_rigidbody.velocity;
+			m_gravityNormal = GetGravityNormal();
+			m_isGrounded = Physics2D.Raycast( m_rigidbody.position, -GetGravityNormal(), m_groundedProbeLength, m_groundedProbeLayer );
+		}
+
+		private Vector3 GetGravityNormal()
+		{
+			return (m_rigidbody.position - m_orbitTarget.position).normalized;
+		}
+
+		private void Accelerate()
+		{
+			Vector3 xAxis = Vector3.ProjectOnPlane( Vector3.right, m_gravityNormal ).normalized;
+			Vector3 yAxis = Vector3.ProjectOnPlane( Vector3.up, m_gravityNormal ).normalized;
+
+			float currentX = Vector3.Dot( m_velocity, xAxis );
+			float currentY = Vector3.Dot( m_velocity, yAxis );
+
+			float speedDelta = m_acceleration * Time.deltaTime;
+			float newX = Mathf.MoveTowards( currentX, m_desiredVelocity.x, speedDelta );
+			float newY = Mathf.MoveTowards( currentY, m_desiredVelocity.y, speedDelta );
+
+			m_velocity += xAxis * (newX - currentX) + yAxis * (newY - currentY);
+		}
+
+		private void ApplyGravity()
+		{
+			float gravForce = m_gravityForce * m_rigidbody.gravityScale;
+			m_velocity -= m_gravityNormal * gravForce * Time.deltaTime;
+		}
+
+		private void ApplyVelocity()
+		{
+			m_rigidbody.velocity = m_velocity;
+		}
+
+		private void Jump()
+		{
+			m_isJumpDesired = false;
+
+			float jumpForce = Mathf.Sqrt( 2f * m_gravityForce * m_jumpHeight );
+			m_velocity += GetGravityNormal() * jumpForce;
 		}
 
 		private void Start()
