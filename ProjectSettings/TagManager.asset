@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Player
+  - NoPlayer
+  - Planet
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Planet
+    uniqueID: 2726045567
+    locked: 0
+  - name: Player
+    uniqueID: 2201084887
     locked: 0
