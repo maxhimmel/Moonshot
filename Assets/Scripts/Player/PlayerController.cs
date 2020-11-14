@@ -11,6 +11,8 @@ namespace Moonshot.Gameplay.Player
 	[SelectionBase]
 	public class PlayerController : MonoBehaviour
 	{
+		private Vector2 RelativeRight { get { return m_orbitTarget.transform.right; } }
+
 		[Header( "Orbit" )]
 		[SerializeField] private Rigidbody2D m_orbitTarget = default;
 		[SerializeField] private float m_gravityForce = 2;
@@ -20,11 +22,16 @@ namespace Moonshot.Gameplay.Player
 		[SerializeField] private bool m_beginGrounded = true;
 		[SerializeField] private float m_acceleration = 10;
 		[SerializeField] private float m_maxSpeed = 5;
-		[SerializeField] private float m_jumpHeight = 3;
 
-		[Header( "Pushing" )]
+		[Header( "Jumping" )]
+		[SerializeField] private float m_jumpHeight = 3;
+		[SerializeField] private float m_longJumpGravityScale = 1;
+		[SerializeField] private float m_shortJumpGravityScale = 2;
+
+		[Header( "Orbit Collision" )]
 		[SerializeField] private float m_jumpPushForce = 10;
 		[SerializeField] private float m_landPushForce = 10;
+		[SerializeField] private float m_landTorque = 30;
 
 		private Rewired.Player m_input = null;
 
@@ -36,8 +43,10 @@ namespace Moonshot.Gameplay.Player
 		private float m_currentSpeed = 0;
 		private float m_currentGravity = 0;
 		private float m_currentJumpForce = 0;
+		private float m_prevJumpForce = 0;
 		private Vector3 m_desiredMoveDirection = Vector3.zero;
 		private bool m_isJumpDesired = false;
+		private bool m_isLongJumping = false;
 		private bool m_isGrounded = false;
 
 		private void Update()
@@ -48,6 +57,10 @@ namespace Moonshot.Gameplay.Player
 			if ( m_input.GetButtonDown( Action.Jump ) )
 			{
 				TryJump();
+			}
+			else if ( m_input.GetButtonUp( Action.Jump ) )
+			{
+				StopJumping();
 			}
 		}
 
@@ -70,7 +83,20 @@ namespace Moonshot.Gameplay.Player
 			if ( !m_isGrounded ) { return false; }
 
 			m_isJumpDesired = true;
+			m_isLongJumping = true;
+
+			m_rigidbody.gravityScale = m_longJumpGravityScale;
+
 			return true;
+		}
+
+		private void StopJumping()
+		{
+			if ( !m_isLongJumping ) { return; }
+
+			m_isLongJumping = false;
+
+			m_rigidbody.gravityScale = m_shortJumpGravityScale;
 		}
 
 		private void FixedUpdate()
@@ -91,7 +117,13 @@ namespace Moonshot.Gameplay.Player
 
 		private void UpdateState()
 		{
-			m_gravityNormal = Quaternion.Euler( 0, 0, m_currentAngle ) * Vector2.up;
+			m_gravityNormal = Quaternion.Euler( 0, 0, m_currentAngle ) * RelativeRight;
+
+			bool isJumpApexReached = m_prevJumpForce > 0 && m_currentJumpForce <= 0;
+			if ( isJumpApexReached )
+			{
+				OnJumpApexReached();
+			}
 
 			bool wasPreviouslyGrounded = m_isGrounded;
 			m_isGrounded = m_currentGravity <= 0;
@@ -102,14 +134,24 @@ namespace Moonshot.Gameplay.Player
 			}
 		}
 
+		private void OnJumpApexReached()
+		{
+			m_isLongJumping = false;
+			m_rigidbody.gravityScale = m_longJumpGravityScale;
+		}
+
 		private void OnLanded()
 		{
+			float normalizedSpeed = m_currentSpeed / m_maxSpeed;
+			float landTorque = m_landTorque * normalizedSpeed;
+			SpinOrbitTarget( landTorque );
+
 			PushOrbitTarget( -m_gravityNormal * m_landPushForce );
 		}
 
 		private void Accelerate()
 		{
-			float targetAngle = Vector2.SignedAngle( Vector2.up, m_desiredMoveDirection );
+			float targetAngle = Vector2.SignedAngle( RelativeRight, m_desiredMoveDirection );
 			int moveDir = System.Math.Sign( Mathf.DeltaAngle( m_currentAngle, targetAngle ) );
 			
 			float speedDelta = m_acceleration * Time.deltaTime;
@@ -133,6 +175,8 @@ namespace Moonshot.Gameplay.Player
 
 		private void ApplyGravity()
 		{
+			m_prevJumpForce = m_currentJumpForce;
+
 			float gravDelta = m_gravityForce * m_rigidbody.gravityScale * Time.deltaTime;
 
 			m_currentGravity += m_currentJumpForce * Time.deltaTime;
@@ -150,9 +194,7 @@ namespace Moonshot.Gameplay.Player
 		private Vector2 GetOrbitPlacement()
 		{
 			float distFromOrbitCenter = GetSurfaceRadius() + GetPlayerRadius() + m_groundOffset + m_currentGravity;
-
-			const float polarCoordOffset = 90;
-			float angle2Rad = (m_currentAngle + polarCoordOffset) * Mathf.Deg2Rad;
+			float angle2Rad = (m_currentAngle + m_orbitTarget.rotation) * Mathf.Deg2Rad;
 
 			Vector2 dirFromOrbit = new Vector2()
 			{
@@ -179,9 +221,17 @@ namespace Moonshot.Gameplay.Player
 			m_orbitTarget.AddForce( force, ForceMode2D.Impulse );
 		}
 
+		private void SpinOrbitTarget( float torque )
+		{
+			m_orbitTarget.AddTorque( torque, ForceMode2D.Force );
+		}
+
 		private void Start()
 		{
 			m_input = ReInput.players.GetPlayer( 0 );
+
+			Vector2 orbitToPlayer = m_rigidbody.position - m_orbitTarget.position;
+			m_currentAngle = Vector2.SignedAngle( RelativeRight, orbitToPlayer );
 
 			if ( m_beginGrounded )
 			{
@@ -189,6 +239,16 @@ namespace Moonshot.Gameplay.Player
 				m_isGrounded = true;
 			}
 		}
+
+		//private void OnCollisionEnter2D( Collision2D collision )
+		//{
+		//	if ( collision.transform == m_orbitTarget.transform ) { return; }
+
+		//	ContactPoint2D contact = collision.GetContact( 0 );
+
+		//	Debug.DrawRay( contact.point, contact.normal * contact.normalImpulse, Color.magenta, 1f );
+		//	Debug.DrawRay( contact.point, contact.relativeVelocity, Color.green, 1f );
+		//}
 
 		private void Awake()
 		{
