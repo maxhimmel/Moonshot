@@ -4955,7 +4955,7 @@ MonoBehaviour:
   m_shortJumpGravityScale: 2
   m_jumpPushForce: 10
   m_landPushForce: 4
-  m_landTorque: 120
+  m_landTorque: 0
 --- !u!50 &6717638086144648335
 Rigidbody2D:
   serializedVersion: 4
