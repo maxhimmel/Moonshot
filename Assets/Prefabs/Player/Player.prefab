@@ -115,7 +115,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2093882409
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 76b566139bcdb1d4fa0cbfa31390ac7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4891,6 +4891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6717638086144648334}
+  - component: {fileID: 2040036125255247652}
   - component: {fileID: 6717638086144648329}
   - component: {fileID: 6717638086144648335}
   - component: {fileID: 6717638086144648328}
@@ -4918,6 +4919,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2040036125255247652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717638086144648332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8211bafcf445c6d46b9044421c76b817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6717638086144648329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4936,6 +4949,7 @@ MonoBehaviour:
   m_beginGrounded: 1
   m_acceleration: 20
   m_maxSpeed: 4
+  m_maxAirSpeed: 1
   m_jumpHeight: 2.75
   m_longJumpGravityScale: 1
   m_shortJumpGravityScale: 2

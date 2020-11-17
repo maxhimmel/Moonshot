@@ -22,6 +22,7 @@ namespace Moonshot.Gameplay.Player
 		[SerializeField] private bool m_beginGrounded = true;
 		[SerializeField] private float m_acceleration = 10;
 		[SerializeField] private float m_maxSpeed = 5;
+		[SerializeField] private float m_maxAirSpeed = 1;
 
 		[Header( "Jumping" )]
 		[SerializeField] private float m_jumpHeight = 3;
@@ -34,6 +35,7 @@ namespace Moonshot.Gameplay.Player
 		[SerializeField] private float m_landTorque = 30;
 
 		private Rewired.Player m_input = null;
+		private IMoveInterpreter m_moveInterpreter = new RelativeMoveInterpreter();
 
 		private Rigidbody2D m_rigidbody = null;
 		private CircleCollider2D m_collider = null;
@@ -48,6 +50,11 @@ namespace Moonshot.Gameplay.Player
 		private bool m_isJumpDesired = false;
 		private bool m_isLongJumping = false;
 		private bool m_isGrounded = false;
+
+		public void SetMoveInterpreter( IMoveInterpreter newInterpreter )
+		{
+			m_moveInterpreter = newInterpreter;
+		}
 
 		private void Update()
 		{
@@ -68,9 +75,8 @@ namespace Moonshot.Gameplay.Player
 		{
 			Vector2 rawMoveInput = m_input.GetAxis2D( Action.MoveHorizontal, Action.MoveVertical );
 			Vector2 clampedMoveInput = Vector2.ClampMagnitude( rawMoveInput, 1 );
-			Vector3 moveInput = Vector3.ProjectOnPlane( clampedMoveInput, m_gravityNormal );
 
-			return moveInput;
+			return m_moveInterpreter.Interpret( clampedMoveInput, m_gravityNormal );
 		}
 
 		private void SetMoveDirection( Vector3 moveDirection )
@@ -155,7 +161,9 @@ namespace Moonshot.Gameplay.Player
 			int moveDir = System.Math.Sign( Mathf.DeltaAngle( m_currentAngle, targetAngle ) );
 			
 			float speedDelta = m_acceleration * Time.deltaTime;
-			m_currentSpeed = Mathf.MoveTowards( m_currentSpeed, m_desiredMoveDirection.magnitude * m_maxSpeed * moveDir, speedDelta );
+			float maxSpeed = moveDir * Mathf.Lerp( m_maxSpeed, m_maxAirSpeed, m_currentGravity / m_jumpHeight );
+
+			m_currentSpeed = Mathf.MoveTowards( m_currentSpeed, m_desiredMoveDirection.magnitude * maxSpeed, speedDelta );
 		}
 
 		private void ApplyAngleVelocity()
