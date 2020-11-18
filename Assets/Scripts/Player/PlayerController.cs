@@ -11,6 +11,11 @@ namespace Moonshot.Gameplay.Player
 	[SelectionBase]
 	public class PlayerController : MonoBehaviour
 	{
+		private readonly int k_isRunningAnimParam = Animator.StringToHash( "IsRunning" );
+		private readonly int k_isGroundedAnimParam = Animator.StringToHash( "IsGrounded" );
+		private readonly int k_apexReachedAnimParam = Animator.StringToHash( "ApexReached" );
+		private readonly int k_jumpAnimParam = Animator.StringToHash( "Jump" );
+
 		private Vector2 RelativeRight { get { return m_orbitTarget.transform.right; } }
 
 		[Header( "Orbit" )]
@@ -39,6 +44,8 @@ namespace Moonshot.Gameplay.Player
 
 		private Rigidbody2D m_rigidbody = null;
 		private CircleCollider2D m_collider = null;
+
+		private Animator m_animator = null;
 		
 		private Vector3 m_gravityNormal = Vector3.up;
 		private float m_currentAngle = 0;
@@ -70,6 +77,8 @@ namespace Moonshot.Gameplay.Player
 			{
 				StopJumping();
 			}
+
+			UpdateAnimator();
 		}
 
 		private Vector3 GetMoveInput()
@@ -104,6 +113,14 @@ namespace Moonshot.Gameplay.Player
 			m_isLongJumping = false;
 
 			m_rigidbody.gravityScale = m_shortJumpGravityScale;
+		}
+
+		private void UpdateAnimator()
+		{
+			bool isRunning = !Mathf.Approximately( m_currentSpeed, 0 );
+			m_animator.SetBool( k_isRunningAnimParam, isRunning );
+
+			m_animator.SetBool( k_isGroundedAnimParam, m_isGrounded );
 		}
 
 		private void FixedUpdate()
@@ -152,6 +169,8 @@ namespace Moonshot.Gameplay.Player
 		{
 			m_isLongJumping = false;
 			m_rigidbody.gravityScale = m_longJumpGravityScale;
+
+			m_animator.SetTrigger( k_apexReachedAnimParam );
 		}
 
 		private void OnLanded()
@@ -187,6 +206,8 @@ namespace Moonshot.Gameplay.Player
 			m_currentJumpForce = Mathf.Sqrt( 2.0f * gravForce * m_jumpHeight );
 
 			PushOrbitTarget( -m_gravityNormal * m_jumpPushForce );
+
+			m_animator.SetTrigger( k_jumpAnimParam );
 		}
 
 		private void ApplyGravity()
@@ -278,6 +299,8 @@ namespace Moonshot.Gameplay.Player
 		{
 			m_rigidbody = GetComponent<Rigidbody2D>();
 			m_collider = GetComponentInChildren<CircleCollider2D>();
+
+			m_animator = GetComponentInChildren<Animator>();
 		}
 	}
 }
