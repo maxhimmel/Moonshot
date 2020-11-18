@@ -27,11 +27,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planetoid_Dynamic
       objectReference: {fileID: 0}
-    - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
-        type: 3}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalPosition.x
