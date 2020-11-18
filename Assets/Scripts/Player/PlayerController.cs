@@ -45,6 +45,7 @@ namespace Moonshot.Gameplay.Player
 		private float m_currentSpeed = 0;
 		private float m_currentGravity = 0;
 		private float m_currentJumpForce = 0;
+		private int m_currentFacingDir = -1;
 		private float m_prevJumpForce = 0;
 		private Vector3 m_desiredMoveDirection = Vector3.zero;
 		private bool m_isJumpDesired = false;
@@ -119,11 +120,18 @@ namespace Moonshot.Gameplay.Player
 
 			ApplyGravity();
 			ApplyFinalMovement();
+
+			ApplyRotation();
 		}
 
 		private void UpdateState()
 		{
 			m_gravityNormal = Quaternion.Euler( 0, 0, m_currentAngle ) * RelativeRight;
+
+			if ( !Mathf.Approximately( m_currentSpeed, 0 ) )
+			{
+				m_currentFacingDir = System.Math.Sign( m_currentSpeed );
+			}
 
 			bool isJumpApexReached = m_prevJumpForce > 0 && m_currentJumpForce <= 0;
 			if ( isJumpApexReached )
@@ -162,7 +170,7 @@ namespace Moonshot.Gameplay.Player
 			
 			float speedDelta = m_acceleration * Time.deltaTime;
 			float maxSpeed = moveDir * Mathf.Lerp( m_maxSpeed, m_maxAirSpeed, m_currentGravity / m_jumpHeight );
-
+			
 			m_currentSpeed = Mathf.MoveTowards( m_currentSpeed, m_desiredMoveDirection.magnitude * maxSpeed, speedDelta );
 		}
 
@@ -222,6 +230,14 @@ namespace Moonshot.Gameplay.Player
 		private float GetPlayerRadius()
 		{
 			return m_collider.radius;
+		}
+
+		private void ApplyRotation()
+		{
+			Vector3 facingDirection = m_currentFacingDir * Vector3.back;
+			Quaternion facing = Quaternion.LookRotation( facingDirection, m_gravityNormal );
+
+			transform.rotation = facing;
 		}
 
 		private void PushOrbitTarget( Vector3 force )
