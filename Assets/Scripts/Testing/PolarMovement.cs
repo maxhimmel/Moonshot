@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Moonshot.Gameplay
+namespace Moonshot.Testing
 {
 	using ReConsts;
 
