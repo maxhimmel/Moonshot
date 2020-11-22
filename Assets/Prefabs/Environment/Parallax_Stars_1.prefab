@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2078757315115148792}
   - component: {fileID: 6201367108128579003}
   m_Layer: 0
-  m_Name: Background
+  m_Name: Parallax_Stars_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6201367108128578980}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,10 +80,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -2095707333
-  m_SortingLayer: 1
+  m_SortingLayerID: 1325026753
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 38863779651088342b37a3d78ced9231, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fe59ad6b3645ed44a5316ae5536536d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

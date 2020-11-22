@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 2199259963
     locked: 0
+  - name: Parallax
+    uniqueID: 1325026753
+    locked: 0
   - name: Planet
     uniqueID: 2726045567
     locked: 0

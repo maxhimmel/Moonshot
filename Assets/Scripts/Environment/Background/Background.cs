@@ -12,7 +12,15 @@ namespace Moonshot.Gameplay.Environment
 		private float Scale { get { return transform.lossyScale.x; } }
 
 		private Sprite m_sprite = null;
-		
+
+		public void Init()
+		{
+			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+			Debug.Assert( renderer != null, $"Invalid background object. Missing SpriteRenderer component.", this );
+
+			m_sprite = renderer.sprite;
+		}
+
 		public Vector2 GetLossyTileSize()
 		{
 			if ( m_sprite == null ) { return Vector2.zero; }
@@ -22,10 +30,10 @@ namespace Moonshot.Gameplay.Environment
 
 		private void Awake()
 		{
-			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-			Debug.Assert( renderer != null, $"Invalid background object. Missing SpriteRenderer component." );
-
-			m_sprite = renderer.sprite;
+			if ( m_sprite == null )
+			{
+				Init();
+			}
 		}
 	}
 }
