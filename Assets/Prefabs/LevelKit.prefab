@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7427327873751560520}
   - component: {fileID: 5682775360523889427}
   - component: {fileID: 1218747491483579590}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Layer_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 7242156536077659643}
   - component: {fileID: 7393662709250793865}
   - component: {fileID: 7199690643640338573}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4391109372284656390}
   - component: {fileID: 5319215924923843093}
   - component: {fileID: 3905751483665374188}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Canvas_Vignette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 4665021362659677430}
   - component: {fileID: 175528880567377757}
   - component: {fileID: 1548614187585796571}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 2136187423544158384}
   - component: {fileID: 1265489041525038386}
   - component: {fileID: 2644738962294794268}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Canvas_BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 9195870815343825410}
   - component: {fileID: 139161868951222547}
   - component: {fileID: 599016629741617721}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Layer_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1015,7 +1015,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3895
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 74b5fa7dc4bb6f545b7eb9678aafa6ed, type: 2}
   m_TargetDisplay: 0
@@ -1363,7 +1363,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1847
+    m_Bits: 5943
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1679,7 +1679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2076853540657972155}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1784,7 +1784,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8661097892690274521}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Parallax
   m_TagString: Untagged
   m_Icon: {fileID: 0}
