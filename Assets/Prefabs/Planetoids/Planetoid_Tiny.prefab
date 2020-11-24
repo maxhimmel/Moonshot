@@ -12,6 +12,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planetoid_Tiny
       objectReference: {fileID: 0}
+    - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
+        type: 3}
+      propertyPath: m_LinearDrag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
+        type: 3}
+      propertyPath: m_Mass
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -70,12 +85,12 @@ PrefabInstance:
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
