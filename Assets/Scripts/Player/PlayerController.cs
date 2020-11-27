@@ -7,6 +7,7 @@ using Xam.Utility.Extensions;
 namespace Moonshot.Gameplay.Player
 {
 	using ReConsts;
+	using Pickups;
 
 	[SelectionBase]
 	public class PlayerController : MonoBehaviour
@@ -46,6 +47,8 @@ namespace Moonshot.Gameplay.Player
 		private CircleCollider2D m_collider = null;
 
 		private Animator m_animator = null;
+
+		private ICollector m_starCollector = null;
 		
 		private Vector3 m_gravityNormal = Vector3.up;
 		private float m_currentAngle = 0;
@@ -271,6 +274,15 @@ namespace Moonshot.Gameplay.Player
 			m_orbitTarget.AddTorque( torque, ForceMode2D.Force );
 		}
 
+		private void OnCollisionEnter2D( Collision2D collision )
+		{
+			IPickup pickup = collision.rigidbody?.GetComponent<IPickup>();
+			if ( pickup != null )
+			{
+				m_starCollector.Collect( pickup );
+			}
+		}
+
 		private void Start()
 		{
 			m_input = ReInput.players.GetPlayer( 0 );
@@ -285,22 +297,14 @@ namespace Moonshot.Gameplay.Player
 			}
 		}
 
-		//private void OnCollisionEnter2D( Collision2D collision )
-		//{
-		//	if ( collision.transform == m_orbitTarget.transform ) { return; }
-
-		//	ContactPoint2D contact = collision.GetContact( 0 );
-
-		//	Debug.DrawRay( contact.point, contact.normal * contact.normalImpulse, Color.magenta, 1f );
-		//	Debug.DrawRay( contact.point, contact.relativeVelocity, Color.green, 1f );
-		//}
-
 		private void Awake()
 		{
 			m_rigidbody = GetComponent<Rigidbody2D>();
 			m_collider = GetComponentInChildren<CircleCollider2D>();
 
 			m_animator = GetComponentInChildren<Animator>();
+
+			m_starCollector = GetComponentInChildren<StarCollector>();
 		}
 	}
 }
