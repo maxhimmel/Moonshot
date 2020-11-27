@@ -50,6 +50,9 @@ TagManager:
   - name: Planet
     uniqueID: 2726045567
     locked: 0
+  - name: Props
+    uniqueID: 1951952105
+    locked: 0
   - name: Player
     uniqueID: 2201084887
     locked: 0
