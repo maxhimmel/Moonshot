@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Moonshot.Utlity
+namespace Moonshot.Utility
 {
 	[ExecuteInEditMode]
 	public class ScaleRatioConstraint : MonoBehaviour
