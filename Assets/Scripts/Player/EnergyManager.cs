@@ -43,6 +43,7 @@ namespace Moonshot.Gameplay
 				if ( CurrentEnergy <= 0 )
 				{
 					OnEnergyDepletedEvent?.Invoke( this );
+					GameMode.Instance.Lose();
 				}
 			}
 		}

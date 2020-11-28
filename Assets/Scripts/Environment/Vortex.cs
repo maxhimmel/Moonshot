@@ -11,9 +11,9 @@ namespace Moonshot.Gameplay
 	{
 		protected override void OnTargetEntered( PlayerController target )
 		{
-			Debug.Log( $"PLAYER ENTERED ZONE - <size=20>WIN GAME</size>" );
-
 			base.OnTargetEntered( target );
+			
+			GameMode.Instance.Win();
 		}
 	}
 }
