@@ -427,6 +427,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
       value: 
       objectReference: {fileID: 21300000, guid: 7c09df5d3bc37dc46b963d7b5b89910e,
@@ -449,6 +454,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: eaf1d0be4514bad45a16d3033047afa0,
         type: 3}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1843043352}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2269988952670046035, guid: 721104bf6b3efe944955b24fbd23fccd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -568,6 +598,24 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1843043349}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1843043351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2269988952670046032, guid: 721104bf6b3efe944955b24fbd23fccd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1843043349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1843043352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843043351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19233c5b7f550d48aef4f860424f174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1936383998
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,6 +802,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_Start
       objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2269988951829195939}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269988952670046034, guid: 721104bf6b3efe944955b24fbd23fccd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Sample_shoze1
+      objectReference: {fileID: 0}
     - target: {fileID: 2269988952670046035, guid: 721104bf6b3efe944955b24fbd23fccd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -861,3 +944,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 721104bf6b3efe944955b24fbd23fccd, type: 3}
+--- !u!1 &2269988951829195938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2269988952670046032, guid: 721104bf6b3efe944955b24fbd23fccd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2269988951829195937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2269988951829195939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269988951829195938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390c5aa2b11d3ef4991ca138d7eb27c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_levelLoadMode: 0
+--- !u!114 &2269988951829195940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269988951829195938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d356f8093accb5141b4d78be8c422984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
