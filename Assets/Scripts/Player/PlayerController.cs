@@ -37,7 +37,8 @@ namespace Moonshot.Gameplay.Player
 
 		[Header( "Orbit Collision" )]
 		[SerializeField] private float m_jumpPushForce = 10;
-		[SerializeField] private float m_landPushForce = 10;
+		[SerializeField] private float m_landMinPushForce = 2;
+		[SerializeField] private float m_landMaxPushForce = 10;
 		[SerializeField] private float m_landTorque = 30;
 
 		private Rewired.Player m_input = null;
@@ -61,6 +62,7 @@ namespace Moonshot.Gameplay.Player
 		private bool m_isJumpDesired = false;
 		private bool m_isLongJumping = false;
 		private bool m_isGrounded = false;
+		private float m_nextLandPushForce = 0;
 
 		public void SetMoveInterpreter( IMoveInterpreter newInterpreter )
 		{
@@ -170,6 +172,8 @@ namespace Moonshot.Gameplay.Player
 
 		private void OnJumpApexReached()
 		{
+			m_nextLandPushForce = Mathf.Lerp( m_landMinPushForce, m_landMaxPushForce, m_currentGravity / m_jumpHeight );
+
 			m_isLongJumping = false;
 			m_rigidbody.gravityScale = m_longJumpGravityScale;
 
@@ -182,7 +186,7 @@ namespace Moonshot.Gameplay.Player
 			float landTorque = m_landTorque * normalizedSpeed;
 			SpinOrbitTarget( landTorque );
 
-			PushOrbitTarget( -m_gravityNormal * m_landPushForce );
+			PushOrbitTarget( -m_gravityNormal * m_nextLandPushForce );
 		}
 
 		private void Accelerate()
