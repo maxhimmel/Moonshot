@@ -13,6 +13,11 @@ namespace Moonshot.Gameplay.UI
 
 		private CanvasGroup m_canvasGroup = null;
 
+		private void OnDisable()
+		{
+			Hide( null );
+		}
+
 		private void Awake()
 		{
 			m_canvasGroup = GetComponent<CanvasGroup>();
@@ -22,12 +27,14 @@ namespace Moonshot.Gameplay.UI
 			Debug.Assert( parent != null, $"SelectMarkerElement requires a parent!", this );
 
 			EventTrigger parentTrigger = parent.gameObject.AddComponent<EventTrigger>();
+			if ( parentTrigger != null )
+			{
+				//parentTrigger.triggers.Add( CreateEvent( EventTriggerType.PointerEnter, Show ) );
+				//parentTrigger.triggers.Add( CreateEvent( EventTriggerType.PointerExit, Hide ) );
 
-			//parentTrigger.triggers.Add( CreateEvent( EventTriggerType.PointerEnter, Show ) );
-			//parentTrigger.triggers.Add( CreateEvent( EventTriggerType.PointerExit, Hide ) );
-
-			parentTrigger.triggers.Add( CreateEvent( EventTriggerType.Select, Show ) );
-			parentTrigger.triggers.Add( CreateEvent( EventTriggerType.Deselect, Hide ) );
+				parentTrigger.triggers.Add( CreateEvent( EventTriggerType.Select, Show ) );
+				parentTrigger.triggers.Add( CreateEvent( EventTriggerType.Deselect, Hide ) );
+			}
 		}
 
 		private EventTrigger.Entry CreateEvent( EventTriggerType type, UnityAction<BaseEventData> @event )
