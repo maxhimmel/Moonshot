@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2499542533135900062}
   - component: {fileID: 2499542533135900061}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 2499542533658638582}
   - component: {fileID: 8232085734256792218}
   - component: {fileID: 2499542533658638581}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2889979064845618255}
   - component: {fileID: 3287305754473202197}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8550030606236575218}
   - component: {fileID: 5144923504386956060}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

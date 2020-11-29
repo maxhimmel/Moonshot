@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_gatherMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 32768
   m_contactFilter:
     useTriggers: 0
     useLayerMask: 1
@@ -128,7 +128,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 32768
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
