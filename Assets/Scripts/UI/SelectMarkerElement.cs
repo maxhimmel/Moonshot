@@ -9,6 +9,8 @@ namespace Moonshot.Gameplay.UI
 {
 	public class SelectMarkerElement : MonoBehaviour
 	{
+		[SerializeField] private Transform m_parentOverride = default;
+
 		private CanvasGroup m_canvasGroup = null;
 
 		private void Awake()
@@ -16,7 +18,7 @@ namespace Moonshot.Gameplay.UI
 			m_canvasGroup = GetComponent<CanvasGroup>();
 			Hide( null );
 
-			Transform parent = transform.parent;
+			Transform parent = (m_parentOverride != null) ? m_parentOverride : transform.parent;
 			Debug.Assert( parent != null, $"SelectMarkerElement requires a parent!", this );
 
 			EventTrigger parentTrigger = parent.gameObject.AddComponent<EventTrigger>();
