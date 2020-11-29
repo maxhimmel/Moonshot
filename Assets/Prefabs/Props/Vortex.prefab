@@ -90,7 +90,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3.25
+  m_Radius: 6
 --- !u!1 &5354241853000469516
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +228,9 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  m_pullForce: 30
+  m_minPullForce: 5
+  m_pullDuration: 5
 --- !u!50 &7116002891770700334
 Rigidbody2D:
   serializedVersion: 4
@@ -355,7 +358,7 @@ Transform:
   m_GameObject: {fileID: 8295872945813153527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 8295872947334634226}
   - {fileID: 8295872946780434014}
