@@ -18,8 +18,11 @@ namespace Moonshot.Gameplay.Player
 		private readonly int k_apexReachedAnimParam = Animator.StringToHash( "ApexReached" );
 		private readonly int k_jumpAnimParam = Animator.StringToHash( "Jump" );
 		private readonly int k_vortexPullAnimParam = Animator.StringToHash( "VortexPull" );
+		private readonly int k_dieAnimParam = Animator.StringToHash( "Die" );
 
 		public Rigidbody2D Body { get { return m_rigidbody; } }
+		public bool IsGrounded { get { return m_isGrounded; } }
+		public Vector2 GravityNormal { get { return m_gravityNormal; } }
 		private Vector2 RelativeRight { get { return m_orbitTarget.transform.right; } }
 
 		[Header( "Orbit" )]
@@ -67,6 +70,16 @@ namespace Moonshot.Gameplay.Player
 		private bool m_isGrounded = false;
 		private float m_nextLandPushForce = 0;
 
+		public void PlayDeathAnim()
+		{
+			m_animator.SetTrigger( k_dieAnimParam );
+		}
+
+		public void PlayWinAnim()
+		{
+			m_animator.SetTrigger( k_vortexPullAnimParam );
+		}
+
 		public void SetFreefallActive( bool isActive )
 		{
 			if ( isActive )
@@ -74,8 +87,6 @@ namespace Moonshot.Gameplay.Player
 				m_rigidbody.bodyType = RigidbodyType2D.Dynamic;
 				m_rigidbody.velocity = GetLinearVelocity();
 				m_rigidbody.constraints = RigidbodyConstraints2D.None;
-
-				m_animator.SetTrigger( k_vortexPullAnimParam );
 			}
 			else
 			{
