@@ -24,6 +24,11 @@ namespace Moonshot.Gameplay
 		{
 			base.OnTargetEntered( target );
 
+			if ( EnergyManager.Exists )
+			{
+				EnergyManager.Instance.enabled = false;
+			}
+
 			m_isPlayerGathered = true;
 			BeginPlayerWinSequence( target );
 		}
