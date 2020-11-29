@@ -85,6 +85,11 @@ namespace Moonshot.Gameplay.Player
 				{
 					StopJumping();
 				}
+
+				if ( m_input.GetButtonDown( Action.Pause ) )
+				{
+					GameMode.Instance.TogglePause();
+				}
 			}
 
 			UpdateAnimator();

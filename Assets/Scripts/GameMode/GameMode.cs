@@ -10,14 +10,34 @@ namespace Moonshot.Gameplay
 		public enum EState
 		{
 			Playing,
+			Paused,
 			Win,
 			Lose
 		}
 
 		public event System.Action<GameMode> OnGameWonEvent;
 		public event System.Action<GameMode> OnGameLostEvent;
+		public event System.Action<GameMode> OnGamePauseChangedEvent;
 
 		public EState CurrentState { get; private set; } = EState.Playing;
+
+		public void TogglePause()
+		{
+			EState state = CurrentState;
+			if ( state == EState.Win || state == EState.Lose ) { return; }
+
+			if ( state == EState.Playing )
+			{
+				state = EState.Paused;
+			}
+			else if ( state == EState.Paused )
+			{
+				state = EState.Playing;
+			}
+
+			CurrentState = state;
+			OnGamePauseChangedEvent?.Invoke( this );
+		}
 
 		public void Win()
 		{
