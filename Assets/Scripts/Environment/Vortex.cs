@@ -42,6 +42,7 @@ namespace Moonshot.Gameplay
 		{
 			player.SetGameplayControlsActive( false );
 			player.SetFreefallActive( true );
+			player.PlayWinAnim();
 
 			float timer = 0;
 			while ( timer < 1 )
