@@ -5127,7 +5127,8 @@ MonoBehaviour:
   m_longJumpGravityScale: 1
   m_shortJumpGravityScale: 2
   m_jumpPushForce: 10
-  m_landPushForce: 4
+  m_landMinPushForce: 5
+  m_landMaxPushForce: 5
   m_landTorque: 0
 --- !u!50 &6717638086144648335
 Rigidbody2D:
@@ -5142,7 +5143,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.2
   m_AngularDrag: 0.2
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 0f4fc36ac31c7364890cbd5ff701bb06, type: 2}

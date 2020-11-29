@@ -17,7 +17,9 @@ namespace Moonshot.Gameplay.Player
 		private readonly int k_isGroundedAnimParam = Animator.StringToHash( "IsGrounded" );
 		private readonly int k_apexReachedAnimParam = Animator.StringToHash( "ApexReached" );
 		private readonly int k_jumpAnimParam = Animator.StringToHash( "Jump" );
+		private readonly int k_vortexPullAnimParam = Animator.StringToHash( "VortexPull" );
 
+		public Rigidbody2D Body { get { return m_rigidbody; } }
 		private Vector2 RelativeRight { get { return m_orbitTarget.transform.right; } }
 
 		[Header( "Orbit" )]
@@ -64,6 +66,41 @@ namespace Moonshot.Gameplay.Player
 		private bool m_isLongJumping = false;
 		private bool m_isGrounded = false;
 		private float m_nextLandPushForce = 0;
+
+		public void SetFreefallActive( bool isActive )
+		{
+			if ( isActive )
+			{
+				m_rigidbody.bodyType = RigidbodyType2D.Dynamic;
+				m_rigidbody.velocity = GetLinearVelocity();
+				m_rigidbody.constraints = RigidbodyConstraints2D.None;
+
+				m_animator.SetTrigger( k_vortexPullAnimParam );
+			}
+			else
+			{
+				// TODO: Fix how the player snaps back to the orbit target ...
+				m_rigidbody.bodyType = RigidbodyType2D.Kinematic;
+				m_rigidbody.velocity = Vector2.zero;
+				m_rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+			}
+		}
+
+		private Vector3 GetLinearVelocity()
+		{
+			Vector3 gravityTangent = Quaternion.Euler( 0, 0, 90 ) * m_gravityNormal;
+			Vector3 velocity = gravityTangent * m_currentSpeed + m_gravityNormal * m_currentGravity;
+
+			return velocity;
+		}
+
+		public void SetGameplayControlsActive( bool isActive )
+		{
+			if ( m_input != null )
+			{
+				m_input.SetControlsActive( Category.Gameplay, isActive );
+			}
+		}
 
 		public void SetMoveInterpreter( IMoveInterpreter newInterpreter )
 		{
@@ -141,6 +178,8 @@ namespace Moonshot.Gameplay.Player
 
 		private void FixedUpdate()
 		{
+			if ( !CanUpdateOrbitMovement() ) { return; }
+
 			UpdateState();
 
 			Accelerate();
@@ -155,6 +194,11 @@ namespace Moonshot.Gameplay.Player
 			ApplyFinalMovement();
 
 			ApplyRotation();
+		}
+
+		private bool CanUpdateOrbitMovement()
+		{
+			return m_rigidbody.bodyType != RigidbodyType2D.Dynamic;
 		}
 
 		private void UpdateState()
@@ -300,6 +344,19 @@ namespace Moonshot.Gameplay.Player
 
 		private IEnumerator Start()
 		{
+			InitOrbitPlacement();
+
+			while ( !LevelInitializer.IsInitialized ) { yield return null; }
+
+			m_input = ReInput.players.GetPlayer( 0 );
+			SetMoveInterpreter( PlayerSettings.Instance.CurrentMovement );
+
+			m_input.CreateMapActivationRules();
+			m_input.SetControlsActive( Category.Gameplay, true );
+		}
+
+		private void InitOrbitPlacement()
+		{
 			Vector2 orbitToPlayer = m_rigidbody.position - m_orbitTarget.position;
 			m_currentAngle = Vector2.SignedAngle( RelativeRight, orbitToPlayer );
 
@@ -308,11 +365,6 @@ namespace Moonshot.Gameplay.Player
 				ApplyFinalMovement();
 				m_isGrounded = true;
 			}
-
-			while ( !LevelInitializer.IsInitialized ) { yield return null; }
-
-			m_input = ReInput.players.GetPlayer( 0 );
-			SetMoveInterpreter( PlayerSettings.Instance.CurrentMovement );
 		}
 
 		private void Awake()
