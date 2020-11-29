@@ -15,12 +15,12 @@ PrefabInstance:
     - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_Mass
-      value: 20
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176273, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LinearDrag
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
@@ -80,12 +80,12 @@ PrefabInstance:
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4844598484017176286, guid: 781eabd4e5e147146acb1c00427c74b5,
         type: 3}
