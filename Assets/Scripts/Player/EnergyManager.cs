@@ -6,6 +6,8 @@ using Xam.Initialization;
 
 namespace Moonshot.Gameplay
 {
+	using Player;
+
 	public class EnergyManager : SingletonMono<EnergyManager>
 	{
 		public event System.Action<EnergyManager> OnEnergyAmountChangedEvent;
@@ -18,6 +20,12 @@ namespace Moonshot.Gameplay
 		[Header( "Energy" )]
 		[SerializeField] private float m_maxEnergy = 30;
 		[SerializeField] private float m_energyDecaySpeed = 1;
+
+		[Space]
+		[SerializeField] private float m_deathDuration = 3;
+		[SerializeField] private float m_deathDetachForce = 5;
+
+		private Coroutine m_playerLoseRoutine = null;
 
 		private void Update()
 		{
@@ -43,9 +51,38 @@ namespace Moonshot.Gameplay
 				if ( CurrentEnergy <= 0 )
 				{
 					OnEnergyDepletedEvent?.Invoke( this );
-					GameMode.Instance.Lose();
+					BeginPlayerLoseSequence();
 				}
 			}
+		}
+
+		private void BeginPlayerLoseSequence()
+		{
+			m_playerLoseRoutine = StartCoroutine( PlayerLoseSequence_Coroutine() );
+		}
+
+		private IEnumerator PlayerLoseSequence_Coroutine()
+		{
+			PlayerController player = DynamicPool.Instance.GetFirstPooledObjectByType<PlayerController>();
+
+			player.SetGameplayControlsActive( false );
+			player.SetFreefallActive( true );
+			player.PlayDeathAnim();
+
+			if ( player.IsGrounded )
+			{
+				player.Body.AddForce( player.GravityNormal * m_deathDetachForce, ForceMode2D.Impulse );
+			}
+
+			float timer = 0;
+			while ( timer < 1 )
+			{
+				timer += Time.deltaTime / m_deathDuration;
+
+				yield return null;
+			}
+
+			GameMode.Instance.Lose();
 		}
 
 		protected override void Awake()
