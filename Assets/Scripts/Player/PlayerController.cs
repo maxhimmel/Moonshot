@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 using Xam.Utility.Extensions;
+using Xam.Initialization;
 
 namespace Moonshot.Gameplay.Player
 {
@@ -71,16 +72,19 @@ namespace Moonshot.Gameplay.Player
 
 		private void Update()
 		{
-			Vector3 moveInput = GetMoveInput();
-			SetMoveDirection( moveInput );
+			if ( m_input != null )
+			{
+				Vector3 moveInput = GetMoveInput();
+				SetMoveDirection( moveInput );
 
-			if ( m_input.GetButtonDown( Action.Jump ) )
-			{
-				TryJump();
-			}
-			else if ( m_input.GetButtonUp( Action.Jump ) )
-			{
-				StopJumping();
+				if ( m_input.GetButtonDown( Action.Jump ) )
+				{
+					TryJump();
+				}
+				else if ( m_input.GetButtonUp( Action.Jump ) )
+				{
+					StopJumping();
+				}
 			}
 
 			UpdateAnimator();
@@ -88,6 +92,8 @@ namespace Moonshot.Gameplay.Player
 
 		private Vector3 GetMoveInput()
 		{
+			if ( m_moveInterpreter == null ) { return Vector3.zero; }
+
 			Vector2 rawMoveInput = m_input.GetAxis2D( Action.MoveHorizontal, Action.MoveVertical );
 			Vector2 clampedMoveInput = Vector2.ClampMagnitude( rawMoveInput, 1 );
 
@@ -287,10 +293,8 @@ namespace Moonshot.Gameplay.Player
 			}
 		}
 
-		private void Start()
+		private IEnumerator Start()
 		{
-			m_input = ReInput.players.GetPlayer( 0 );
-
 			Vector2 orbitToPlayer = m_rigidbody.position - m_orbitTarget.position;
 			m_currentAngle = Vector2.SignedAngle( RelativeRight, orbitToPlayer );
 
@@ -299,6 +303,11 @@ namespace Moonshot.Gameplay.Player
 				ApplyFinalMovement();
 				m_isGrounded = true;
 			}
+
+			while ( !LevelInitializer.IsInitialized ) { yield return null; }
+
+			m_input = ReInput.players.GetPlayer( 0 );
+			SetMoveInterpreter( PlayerSettings.Instance.CurrentMovement );
 		}
 
 		private void Awake()
