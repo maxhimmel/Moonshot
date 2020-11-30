@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Xam;
+using Xam.Ui;
 
 namespace Moonshot.Gameplay.UI
 {
@@ -11,11 +12,14 @@ namespace Moonshot.Gameplay.UI
 		[SerializeField] private Button m_againButton = default;
 		[SerializeField] private Button m_exitButton = default;
 
-		private CanvasGroup m_canvasGroup = null;
+		[Space]
+		[SerializeField] private float m_showSpeed = 1;
+		
+		private CanvasGroupWrapper m_canvasGroupWrapper = null;
 
 		private void Awake()
 		{
-			m_canvasGroup = GetComponent<CanvasGroup>();
+			m_canvasGroupWrapper = GetComponent<CanvasGroupWrapper>();
 		}
 
 		private void Start()
@@ -31,7 +35,7 @@ namespace Moonshot.Gameplay.UI
 		private void OnGameLost( GameMode gameMode )
 		{
 			gameObject.SetActive( true );
-			m_canvasGroup.alpha = 1;
+			m_canvasGroupWrapper.CrossFade( 1, m_showSpeed );
 		}
 	}
 }
