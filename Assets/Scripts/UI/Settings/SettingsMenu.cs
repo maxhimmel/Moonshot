@@ -11,15 +11,17 @@ namespace Moonshot.Gameplay.UI
 
 		public void ToggleShow()
 		{
-			bool isActive = !gameObject.activeInHierarchy;
-			if ( isActive )
-			{
-				Show();
-			}
-			else
-			{
-				Hide();
-			}
+			//bool isActive = !gameObject.activeInHierarchy;
+			//if ( isActive )
+			//{
+			//	Show();
+			//}
+			//else
+			//{
+			//	Hide();
+			//}
+
+			GameMode.Instance.TogglePause();
 		}
 
 		private void Show()

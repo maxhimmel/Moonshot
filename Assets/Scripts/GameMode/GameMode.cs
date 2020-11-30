@@ -36,6 +36,9 @@ namespace Moonshot.Gameplay
 			}
 
 			CurrentState = state;
+
+			Debug.Log( CurrentState );
+
 			OnGamePauseChangedEvent?.Invoke( this );
 		}
 
