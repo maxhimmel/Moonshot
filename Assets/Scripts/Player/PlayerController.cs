@@ -4,6 +4,7 @@ using UnityEngine;
 using Rewired;
 using Xam.Utility.Extensions;
 using Xam.Initialization;
+using Xam.Audio;
 
 namespace Moonshot.Gameplay.Player
 {
@@ -47,6 +48,12 @@ namespace Moonshot.Gameplay.Player
 		[SerializeField] private float m_landMaxPushForce = 10;
 		[SerializeField] private float m_landTorque = 30;
 
+		[Header( "SFX" )]
+		[SerializeField] private SfxClip m_jumpSfx = default;
+		[SerializeField] private SfxClip m_landSfx = default;
+		[SerializeField] private SfxClip m_deathSfx = default;
+		[SerializeField] private SfxClip m_vortexPullSfx = default;
+
 		private Rewired.Player m_input = null;
 		private IMoveInterpreter m_moveInterpreter = new RelativeMoveInterpreter();
 
@@ -73,11 +80,13 @@ namespace Moonshot.Gameplay.Player
 		public void PlayDeathAnim()
 		{
 			m_animator.SetTrigger( k_dieAnimParam );
+			m_deathSfx?.PlaySfx();
 		}
 
 		public void PlayWinAnim()
 		{
 			m_animator.SetTrigger( k_vortexPullAnimParam );
+			m_vortexPullSfx?.PlaySfx();
 		}
 
 		public void SetFreefallActive( bool isActive )
@@ -253,6 +262,8 @@ namespace Moonshot.Gameplay.Player
 			SpinOrbitTarget( landTorque );
 
 			PushOrbitTarget( -m_gravityNormal * m_nextLandPushForce );
+
+			m_landSfx?.PlaySfx();
 		}
 
 		private void Accelerate()
@@ -281,6 +292,7 @@ namespace Moonshot.Gameplay.Player
 			PushOrbitTarget( -m_gravityNormal * m_jumpPushForce );
 
 			m_animator.SetTrigger( k_jumpAnimParam );
+			m_jumpSfx?.PlaySfx();
 		}
 
 		private void ApplyGravity()

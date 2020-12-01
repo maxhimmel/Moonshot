@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Xam.Utility.Patterns;
 using Xam.Initialization;
+using Xam.Audio;
 
 namespace Moonshot.Gameplay
 {
@@ -25,6 +26,10 @@ namespace Moonshot.Gameplay
 		[SerializeField] private float m_deathDuration = 3;
 		[SerializeField] private float m_deathDetachForce = 5;
 
+		[Header( "SFX" )]
+		[SerializeField] private SfxClip m_rechargeSfx = default;
+		[SerializeField] private SfxClip m_depletedSfx = default;
+
 		private Coroutine m_playerLoseRoutine = null;
 
 		private void Update()
@@ -46,10 +51,17 @@ namespace Moonshot.Gameplay
 
 			if ( prevEnergy != CurrentEnergy )
 			{
+				if ( energy > 0 )
+				{
+					m_rechargeSfx?.PlaySfx();
+				}
+
 				OnEnergyAmountChangedEvent?.Invoke( this );
 
 				if ( CurrentEnergy <= 0 )
 				{
+					m_depletedSfx?.PlaySfx();
+
 					OnEnergyDepletedEvent?.Invoke( this );
 					BeginPlayerLoseSequence();
 				}

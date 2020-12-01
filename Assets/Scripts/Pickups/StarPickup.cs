@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Xam.Audio;
 
 namespace Moonshot.Gameplay.Pickups
 {
@@ -9,18 +10,23 @@ namespace Moonshot.Gameplay.Pickups
 		[SerializeField] private float m_energyRefill = 10;
 		[SerializeField] private float m_deathDuration = 0.65f;
 
+		[Header( "SFX" )]
+		[SerializeField] private SfxClip m_acquireSfx = default;
+
 		private Rigidbody2D m_rigidbody = null;
 		private Coroutine m_deathRoutine = null;
 
 		void IPickup.Acquire()
 		{
-			if ( EnergyManager.Exists )
-			{
-				EnergyManager.Instance.AddEnergy( m_energyRefill );
-			}
-
 			if ( m_deathRoutine == null )
 			{
+				m_acquireSfx?.PlaySfx();
+
+				if ( EnergyManager.Exists )
+				{
+					EnergyManager.Instance.AddEnergy( m_energyRefill );
+				}
+
 				m_deathRoutine = StartCoroutine( UpdateDeath_Coroutine() );
 			}
 		}
